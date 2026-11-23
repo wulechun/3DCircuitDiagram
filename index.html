@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电路图 3D 讲解</title>
+<link rel="stylesheet" href="./css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./lib/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <!-- 左侧 3D 视口 -->
+  <div id="viewport">
+    <canvas id="three-canvas"></canvas>
+    <div id="viewport-hint">左键旋转 · 右键平移 · 滚轮缩放 · 点击元件查看详情</div>
+    <div id="viewport-tag">3D VIEW</div>
+    <div id="loading-overlay" class="hidden">
+      <div class="spinner"></div>
+      <div id="loading-text">正在解析电路图...</div>
+    </div>
+  </div>
+
+  <!-- 右侧信息面板 -->
+  <aside id="panel">
+    <header id="panel-header">
+      <div id="panel-title-row">
+        <h1 id="circuit-title">电路图 3D 讲解</h1>
+        <div id="panel-tools">
+          <button id="btn-upload" class="tool-btn" title="上传电路图，AI 解析生成 3D">
+            <span class="tool-icon">⬆</span>上传电路图
+          </button>
+          <button id="btn-json" class="tool-btn" title="载入电路 JSON 文件">
+            <span class="tool-icon">{ }</span>载入JSON
+          </button>
+          <button id="btn-settings" class="tool-btn icon-only" title="AI 接口设置">
+            <span class="tool-icon">⚙</span>
+          </button>
+        </div>
+      </div>
+      <div id="circuit-subtitle" class="hidden"></div>
+    </header>
+    <div id="panel-content">
+      <!-- 由 panel.js 动态渲染 -->
+    </div>
+    <footer id="panel-footer">
+      <span id="status-text">就绪</span>
+      <input type="file" id="file-image" accept="image/*" hidden>
+      <input type="file" id="file-json" accept=".json,application/json" hidden>
+    </footer>
+  </aside>
+</div>
+
+<!-- AI 设置弹窗 -->
+<div id="modal-backdrop" class="hidden">
+  <div id="modal">
+    <div class="modal-head">
+      <h2>AI 接口设置（OpenAI 兼容）</h2>
+      <button id="modal-close" class="icon-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="field">
+        <span>接口地址 Base URL</span>
+        <input type="text" id="ai-base-url" placeholder="https://api.example.com/v1">
+      </label>
+      <label class="field">
+        <span>API Key</span>
+        <input type="password" id="ai-key" placeholder="sk-...">
+      </label>
+      <label class="field">
+        <span>视觉模型名称</span>
+        <input type="text" id="ai-model" placeholder="qwen-vl-max / doubao-1.5-vision-pro / gpt-4o ...">
+      </label>
+      <p class="field-tip">支持任何 OpenAI 兼容的多模态 Chat 接口。配置保存在浏览器本地（localStorage）。</p>
+    </div>
+    <div class="modal-foot">
+      <button id="ai-test" class="btn ghost">测试连通</button>
+      <div class="spacer"></div>
+      <button id="modal-cancel" class="btn ghost">取消</button>
+      <button id="modal-save" class="btn primary">保存</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="hidden"></div>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
